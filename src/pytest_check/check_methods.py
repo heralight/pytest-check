@@ -180,9 +180,21 @@ def log_failure(msg):
         (file, line, func, context) = get_full_context(level)
         if "site-packages" in file:
             break
-        line = "{}:{} in {}() -> {}".format(file, line, func, context)
+        line = "{}:{}, in \033[93m{}()\033[0m -> {}".format(file, line, func, context)
         pseudo_trace.append(line)
         level += 1
     pseudo_trace_str = "\n".join(reversed(pseudo_trace))
-    entry = "FAILURE: {}\n{}".format(msg if msg else "", pseudo_trace_str)
+    entry = Color.FAIL + Color.UNDERLINE + "FAILURE:"+ Color.ENDC + " \033[35m{}\033[0m\n{}".format(msg if msg else "", pseudo_trace_str)
     _failures.append(entry)
+
+
+class Color:
+    HEADER = '\033[35m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+    BLINK = '\33[5m'
